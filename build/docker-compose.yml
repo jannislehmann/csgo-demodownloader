@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  csgodownloader:
+    build: .
+    container_name: csgo-downloader
+    restart: unless-stopped
+    volumes: 
+      - ./demos:/demos
+      - ./config:/config

@@ -1,0 +1,10 @@
+{
+    "matchHistoryAuthenticationCode": "xyz",
+    "knownMatchCode": "CSGO-abcde-efghi-jklmn-opqrs-tuvwx",
+    "steamId": "76561198185324675",
+    "steamApiKey": "private",
+    "username": "secret",
+    "password": "superSecret",
+    "twoFactorSecret": "superDuperSecret",
+    "demosDir": "./demos/"
+}

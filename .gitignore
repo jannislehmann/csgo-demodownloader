@@ -1,0 +1,9 @@
+# Binary
+app
+csgo-demodownloader
+
+# Storage
+configs/config.json
+configs/demos.sqlite
+demos/*
+sentry
