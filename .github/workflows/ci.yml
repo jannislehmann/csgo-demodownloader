@@ -2,9 +2,6 @@ name: Build binary and Docker image
 
 on: [push, pull_request]
 
-env:
-  IMAGE_NAME: cludch/csgo-demodownloader
-
 jobs:
   lint:
     name: Lint
@@ -67,7 +64,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ${{ IMAGE_NAME }}
+          images: cludch/csgo-demodownloader
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
