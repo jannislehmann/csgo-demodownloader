@@ -1,7 +1,5 @@
 # CSGO Demo Downloader
 
-[![GitHub Super-Linter](https://github.com/Cludch/csgo-demodownloader/workflows/Lint%20Code%20Base/badge.svg)](https://cludch.net)
-
 The CSGO demo downloader can automatically download new CSGO official matchmaking demos using the GameCoordinator.
 In order to do this, a few API credentials and a **separate** Steam account is needed. The application creates a CSGO game sessions using the separate account
 and uses the Steam web API to check whether a new demo can be fetched. If that is the case, the application sends a full match info request to the game's GameCoordinator.
