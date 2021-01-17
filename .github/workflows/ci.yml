@@ -58,7 +58,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./csgo-demodownloader/csgo-demodownloader
-          asset_name: csgo-demodownloader
+          asset_name: csgo-demodownloader-${{ github.ref }}
           asset_content_type: application/vnd.github.VERSION.raw
 
   dockerhub:
