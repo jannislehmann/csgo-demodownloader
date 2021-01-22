@@ -5,10 +5,12 @@
         "twoFactorSecret": "superDuperSecret",
         "apiKey": "private"
     },
-    "csgo": {
-        "matchHistoryAuthenticationCode": "xyz",
-        "knownMatchCode": "CSGO-abcde-efghi-jklmn-opqrs-tuvwx",
-        "steamId": "76561198185324675"
-    },
+    "csgo": [ 
+        {
+            "matchHistoryAuthenticationCode": "xyz",
+            "knownMatchCode": "CSGO-abcde-efghi-jklmn-opqrs-tuvwx",
+            "steamId": "76561198185324675"
+        }
+    ],
     "demosDir": "./demos/"
 }
