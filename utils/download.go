@@ -4,6 +4,7 @@ package utils
 
 import (
 	"compress/bzip2"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -11,16 +12,20 @@ import (
 	"regexp"
 )
 
-type invalidDownloadURLError struct{}
+// InvalidDownloadURLError is return when the url to be download is invalid or malicious.
+type InvalidDownloadURLError struct{}
 
-type demoNotFoundError struct{}
-
-func (e *invalidDownloadURLError) Error() string {
+func (e *InvalidDownloadURLError) Error() string {
 	return "Invalid download url"
 }
 
-func (e *demoNotFoundError) Error() string {
-	return "Demo no longer downloadable"
+// DemoNotFoundError is used when a valid matchid / demo is not found or can no longer be downloaded.
+type DemoNotFoundError struct {
+	URL string
+}
+
+func (e *DemoNotFoundError) Error() string {
+	return fmt.Sprintf("Demo no longer downloadable: %s", e.URL)
 }
 
 // DownloadDemo will download a demo from an url and decompress and store it in local filepath.
@@ -31,7 +36,7 @@ func DownloadDemo(url string, filepath string) error {
 	re := regexp.MustCompile(`^http:\/\/replay[\d]{3}\.valve\.net\/730\/[\d]{21}_([\d]*)\.dem\.bz2$`)
 
 	if !re.MatchString(url) {
-		return &invalidDownloadURLError{}
+		return &InvalidDownloadURLError{}
 	}
 
 	// Create the file
@@ -45,7 +50,7 @@ func DownloadDemo(url string, filepath string) error {
 	resp, err := http.Get(url) //nolint // We have to take dynamic replay urls in order to download them. Url is validated before.
 	if err != nil || resp.StatusCode != http.StatusOK {
 		resp.Body.Close()
-		return &demoNotFoundError{}
+		return &DemoNotFoundError{URL: url}
 	}
 
 	// Decompress and write to file

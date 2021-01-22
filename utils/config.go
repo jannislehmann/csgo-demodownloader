@@ -10,9 +10,9 @@ var config Config
 
 // Config holds the application configuration
 type Config struct {
-	DemosDir string       `json:"demosDir"`
-	Steam    *SteamConfig `json:"steam"`
-	CSGO     *CSGOConfig  `json:"csgo"`
+	DemosDir string        `json:"demosDir"`
+	Steam    *SteamConfig  `json:"steam"`
+	CSGO     []*CSGOConfig `json:"csgo"`
 }
 
 // SteamConfig holds the configuration about the steam account to use for communicating with the GameCoordinator.
@@ -28,6 +28,7 @@ type CSGOConfig struct {
 	HistoryAPIKey  string `json:"matchHistoryAuthenticationCode"`
 	KnownMatchCode string `json:"knownMatchCode"`
 	SteamID        string `json:"steamId"` // should be uint64
+	Disabled       bool
 }
 
 // GetConfiguration returns the Config information

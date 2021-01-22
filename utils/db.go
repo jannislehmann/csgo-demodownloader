@@ -11,7 +11,7 @@ import (
 var db *sql.DB
 
 func init() {
-	localDb, err := sql.Open("sqlite3", "configs/demos.sqlite")
+	localDb, err := sql.Open("sqlite3", "./configs/db.sqlite")
 	if err != nil {
 		log.Panic(err)
 	}

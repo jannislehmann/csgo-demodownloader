@@ -4,6 +4,6 @@ csgo-demodownloader
 
 # Storage
 configs/config.json
-configs/demos.sqlite
+configs/db.sqlite
 demos/*
 sentry
