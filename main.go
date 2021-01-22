@@ -25,11 +25,11 @@ func main() {
 
 	utils.ScanDemosDir()
 
-	totpInstance := totp.NewTotp(config.TwoFactorSecret)
+	totpInstance := totp.NewTotp(config.Steam.TwoFactorSecret)
 
 	myLoginInfo := new(steam.LogOnDetails)
-	myLoginInfo.Username = config.Username
-	myLoginInfo.Password = config.Password
+	myLoginInfo.Username = config.Steam.Username
+	myLoginInfo.Password = config.Steam.Password
 	twoFactorCode, err := totpInstance.GenerateCode()
 
 	if err != nil {
