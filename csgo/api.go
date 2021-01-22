@@ -49,6 +49,12 @@ func GetLatestMatch(csgoConfig *utils.CSGOConfig, steamAPIKey string) string {
 		return ""
 	}
 
+	// Accepted means that there is no recent match code available
+	if r.StatusCode == http.StatusAccepted {
+		r.Body.Close()
+		return ""
+	}
+
 	errJSON := json.NewDecoder(r.Body).Decode(matchResponse)
 
 	if errJSON != nil {
