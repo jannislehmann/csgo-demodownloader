@@ -17,9 +17,7 @@ type MatchResponse struct {
 }
 
 // GetLatestMatch returns the latest match's share code.
-func GetLatestMatch() string {
-	config := utils.GetConfiguration()
-
+func GetLatestMatch(csgoConfig *utils.CSGOConfig, steamAPIKey string) string {
 	// Get latest match
 	u, err := url.Parse("https://api.steampowered.com/ICSGOPlayers_730/GetNextMatchSharingCode/v1")
 	if err != nil {
@@ -28,25 +26,35 @@ func GetLatestMatch() string {
 
 	// Build query
 	q := u.Query()
-	q.Set("key", config.Steam.SteamAPIKey)
-	q.Set("steamid", config.CSGO[0].SteamID)
-	q.Set("steamidkey", config.CSGO[0].HistoryAPIKey)
-	q.Set("knowncode", config.CSGO[0].KnownMatchCode)
+	q.Set("key", steamAPIKey)
+	q.Set("steamid", csgoConfig.SteamID)
+	q.Set("steamidkey", csgoConfig.HistoryAPIKey)
+	q.Set("knowncode", csgoConfig.KnownMatchCode)
 	u.RawQuery = q.Encode()
 
-	// Request match code
 	matchResponse := &MatchResponse{}
 
+	// Request match code
 	r, err := http.Get(u.String())
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
+		return ""
+	}
+
+	// Forbidden = wrong api keys
+	// Precondition Failed = Know match code or steam id wrong
+	if r.StatusCode == http.StatusForbidden || r.StatusCode == http.StatusPreconditionFailed {
+		r.Body.Close()
+		csgoConfig.Disabled = true
+		return ""
 	}
 
 	errJSON := json.NewDecoder(r.Body).Decode(matchResponse)
 
 	if errJSON != nil {
 		r.Body.Close()
-		log.Fatal(err)
+		log.Print(err)
+		return ""
 	}
 
 	defer r.Body.Close()

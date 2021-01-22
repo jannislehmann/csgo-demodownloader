@@ -12,5 +12,5 @@
             "steamId": "76561198185324675"
         }
     ],
-    "demosDir": "./demos/"
+    "demosDir": "/home/csgo/demos/"
 }

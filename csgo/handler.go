@@ -31,7 +31,7 @@ func (c *CS) HandleMatchList(packet *gamecoordinator.GCPacket) error {
 
 			err := utils.DownloadDemo(url, demoname)
 			if err != nil {
-				log.Fatal(err)
+				log.Print(err)
 				continue
 			}
 

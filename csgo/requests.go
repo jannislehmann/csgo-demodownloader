@@ -14,13 +14,26 @@ func (c *CS) GetRecentGames() {
 	})
 }
 
-// GetDemos gets the last match via the Steam Web API and tries to request information from the GC
+// GetDemos gets the last match via the Steam Web API and tries to request information from the GC.
+// It iterates through all csgo users and requests the latest share code via the API.
 func (c *CS) GetDemos() {
-	sharecode := GetLatestMatch()
-	sc := utils.Decode(sharecode)
-	c.Write(uint32(protocol.ECsgoGCMsg_k_EMsgGCCStrike15_v2_MatchListRequestFullGameInfo), &protocol.CMsgGCCStrike15V2_MatchListRequestFullGameInfo{
-		Matchid:   proto.Uint64(uint64(sc.MatchID)),
-		Outcomeid: proto.Uint64(uint64(sc.OutcomeID)),
-		Token:     proto.Uint32(uint32(sc.Token)),
-	})
+	config := utils.GetConfiguration()
+	for _, csgoUser := range config.CSGO {
+		if csgoUser.Disabled {
+			continue
+		}
+
+		sharecode := GetLatestMatch(csgoUser, config.Steam.SteamAPIKey)
+
+		if sharecode == "" {
+			continue
+		}
+
+		sc := utils.Decode(sharecode)
+		c.Write(uint32(protocol.ECsgoGCMsg_k_EMsgGCCStrike15_v2_MatchListRequestFullGameInfo), &protocol.CMsgGCCStrike15V2_MatchListRequestFullGameInfo{
+			Matchid:   proto.Uint64(uint64(sc.MatchID)),
+			Outcomeid: proto.Uint64(uint64(sc.OutcomeID)),
+			Token:     proto.Uint32(uint32(sc.Token)),
+		})
+	}
 }

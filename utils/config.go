@@ -28,6 +28,7 @@ type CSGOConfig struct {
 	HistoryAPIKey  string `json:"matchHistoryAuthenticationCode"`
 	KnownMatchCode string `json:"knownMatchCode"`
 	SteamID        string `json:"steamId"` // should be uint64
+	Disabled       bool
 }
 
 // GetConfiguration returns the Config information

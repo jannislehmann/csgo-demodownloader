@@ -8,6 +8,8 @@ The GC then returns information about the match which also contain a download li
 The tool saves all the match ids from the demos in the `demos` directory. This is used to prevent downloading a demo every hour.
 At a later point, I plan to extend the toolset with a separate basic demo analyzer.
 
+The sqlite database file is located in the `configs` directory. The database holds information about downloaded matches and will be extended in the future.
+
 ## Usage
 
 Get the latest binary and set up your demo location and the config file.
@@ -25,7 +27,7 @@ Copy the `config.json.example` in the `configs` dir and rename it to `config.jso
 | `username` |   `c`   |  Steam username |
 | `password` |   `b`   |  Steam password |
 | `twoFactorSecret` |   `a`   | Base64 encoded two factor secret. Can be generated using e.g. the [Steam Desktop Authenticator](https://github.com/Jessecar96/SteamDesktopAuthenticator) |
-| `demosDir` |   `/demos`   | The directory, where the demos should be stored |
+| `demosDir` |   `/demos`   | The directory, where the demos should be stored. Should be an absolute path |
 
 ## Disclaimer
 

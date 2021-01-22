@@ -24,15 +24,15 @@ var bitmask64 uint64 = 18446744073709551615
 
 // Decode decodes the share code. Taken from ValvePython/csgo
 func Decode(code string) *ShareCode {
-	var validateRe = regexp.MustCompile(`CSGO(-?[\w]{5}){5}$`)
+	var validateRe = regexp.MustCompile(`^CSGO(-?[\w]{5}){5}$`)
 	found := validateRe.MatchString(code)
 
 	if !found {
-		log.Fatal("invalid share code")
+		log.Print("invalid share code")
 		return nil
 	}
 
-	var re = regexp.MustCompile(`CSGO|\-`)
+	var re = regexp.MustCompile(`^CSGO|\-`)
 	s := re.ReplaceAllString(code, "")
 	s = reverse(s)
 
