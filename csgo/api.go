@@ -28,10 +28,10 @@ func GetLatestMatch() string {
 
 	// Build query
 	q := u.Query()
-	q.Set("key", config.SteamAPIKey)
-	q.Set("steamid", config.SteamID)
-	q.Set("steamidkey", config.HistoryAPIKey)
-	q.Set("knowncode", config.KnownMatchCode)
+	q.Set("key", config.Steam.SteamAPIKey)
+	q.Set("steamid", config.CSGO.SteamID)
+	q.Set("steamidkey", config.CSGO.HistoryAPIKey)
+	q.Set("knowncode", config.CSGO.KnownMatchCode)
 	u.RawQuery = q.Encode()
 
 	// Request match code
