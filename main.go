@@ -23,7 +23,7 @@ func main() {
 
 	config = utils.GetConfiguration()
 
-	utils.ScanDemosDir()
+	go utils.ScanDemosDir()
 
 	totpInstance := totp.NewTotp(config.Steam.TwoFactorSecret)
 
