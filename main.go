@@ -53,8 +53,6 @@ func main() {
 			csgoClient.ShakeHands()
 		case *csgo.GCReadyEvent:
 			csgoClient.HandleGCReady(e)
-		case *csgo.GCMatchDownloaded:
-			csgo.HandleMatchDownloaded(e)
 		case steam.FatalErrorEvent:
 			log.Fatal(e)
 		}

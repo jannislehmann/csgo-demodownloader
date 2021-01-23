@@ -63,7 +63,5 @@ func DownloadDemo(url string, filepath string) error {
 		return err
 	}
 
-	log.Printf("Downloaded demo %s\n", filepath)
-
 	return nil
 }

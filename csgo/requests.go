@@ -23,17 +23,30 @@ func (c *CS) GetDemos() {
 			continue
 		}
 
-		sharecode := GetLatestMatch(csgoUser, config.Steam.SteamAPIKey)
+		shareCode := GetNextMatch(csgoUser, config.Steam.SteamAPIKey)
 
-		if sharecode == "" {
+		if shareCode == "" {
 			continue
 		}
 
-		sc := utils.Decode(sharecode)
-		c.Write(uint32(protocol.ECsgoGCMsg_k_EMsgGCCStrike15_v2_MatchListRequestFullGameInfo), &protocol.CMsgGCCStrike15V2_MatchListRequestFullGameInfo{
-			Matchid:   proto.Uint64(uint64(sc.MatchID)),
-			Outcomeid: proto.Uint64(uint64(sc.OutcomeID)),
-			Token:     proto.Uint32(uint32(sc.Token)),
-		})
+		c.RequestMatch(shareCode)
+		// Save shareCode
+		utils.AddShareCode(csgoUser.SteamID, shareCode)
 	}
+}
+
+// RequestMatch requests the match information for a share code
+func (c *CS) RequestMatch(shareCode string) {
+	// Decode share code
+	sc := utils.Decode(shareCode)
+	if sc == nil {
+		return
+	}
+
+	// Request match info
+	c.Write(uint32(protocol.ECsgoGCMsg_k_EMsgGCCStrike15_v2_MatchListRequestFullGameInfo), &protocol.CMsgGCCStrike15V2_MatchListRequestFullGameInfo{
+		Matchid:   proto.Uint64(uint64(sc.MatchID)),
+		Outcomeid: proto.Uint64(uint64(sc.OutcomeID)),
+		Token:     proto.Uint32(uint32(sc.Token)),
+	})
 }

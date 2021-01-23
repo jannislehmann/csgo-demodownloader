@@ -12,16 +12,18 @@ func (c *CS) HandleGCReady(e *GCReadyEvent) {
 	// Download all recents games from the logged in account
 	c.GetRecentGames()
 
+	// Request demos for share codes from the config
+	// Add known shares codes from the config to the database.
+	for _, csgoUser := range utils.GetConfiguration().CSGO {
+		shareCode := csgoUser.KnownMatchCode
+		c.RequestMatch(shareCode)
+		utils.AddShareCode(csgoUser.SteamID, shareCode)
+	}
+
 	t := time.NewTicker(time.Minute)
 	for {
 		log.Println("checking for a new demo...")
 		go c.GetDemos()
 		<-t.C
 	}
-}
-
-// HandleMatchDownloaded logs information about the downloaded demo.
-func HandleMatchDownloaded(e *GCMatchDownloaded) {
-	log.Printf("Downloaded demo %s\n", e.DemoName)
-	utils.AddMatchToDatabase(e.MatchID)
 }

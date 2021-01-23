@@ -22,20 +22,21 @@ func (c *CS) HandleMatchList(packet *gamecoordinator.GCPacket) error {
 			}
 
 			matchID := match.GetMatchid()
-			demoname := utils.GetConfiguration().DemosDir + strconv.FormatUint(matchID, 10) + ".dem"
+			demoName := utils.GetConfiguration().DemosDir + strconv.FormatUint(matchID, 10) + ".dem"
 			url := round.GetMap()
 
 			if utils.CheckIfMatchExistsAlready(matchID) {
 				continue
 			}
 
-			err := utils.DownloadDemo(url, demoname)
+			err := utils.DownloadDemo(url, demoName)
 			if err != nil {
 				log.Print(err)
 				continue
 			}
 
-			c.emit(&GCMatchDownloaded{DemoName: demoname, MatchID: matchID})
+			log.Printf("Downloaded demo %s\n", demoName)
+			utils.AddMatchToDatabase(matchID)
 		}
 	}
 
