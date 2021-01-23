@@ -23,6 +23,35 @@ func init() {
 	if errExec != nil {
 		log.Panic(errExec)
 	}
+
+	// We need to store share codes multiple times if they belong to different csgo users.
+	sqlStmt = "CREATE TABLE IF NOT EXISTS shareCodes (steamid integer NOT NULL, shareCode varchar(34) NOT NULL, PRIMARY KEY (steamid, shareCode));"
+	_, errExec = db.Exec(sqlStmt)
+	if errExec != nil {
+		log.Panic(errExec)
+	}
+}
+
+// GetLatestShareCode returns the latest saved share code for a steam id.
+// steamID should be uint64. However, this method is only called using string steamids coming from the config.
+func GetLatestShareCode(steamID string) string {
+	shareCode := ""
+	err := db.QueryRow("SELECT shareCode FROM shareCodes WHERE steamid = ? ORDER BY rowid DESC LIMIT 1", steamID).Scan(&shareCode)
+	if err != nil && err != sql.ErrNoRows {
+		log.Print(err)
+	}
+
+	return shareCode
+}
+
+// AddShareCode saves a share code associated to a steam id.
+func AddShareCode(steamID string, shareCode string) {
+	stmt, errPrepare := db.Prepare("insert into shareCodes (steamid, shareCode) values (?, ?)")
+	_, errExec := stmt.Exec(steamID, shareCode)
+
+	if errPrepare == nil && errExec == nil {
+		log.Printf("added shareCode %v to the database for steam id %v\n", shareCode, steamID)
+	}
 }
 
 // CheckIfMatchExistsAlready checks whether the match id is already marked as downloaded (contained) in the database.

@@ -55,8 +55,8 @@ func Decode(code string) *ShareCode {
 	token = token.Rsh(a, 128)
 	token = token.And(token, big.NewInt(0xFFFF))
 
-	sharecode := &ShareCode{MatchID: matchid.Uint64(), OutcomeID: outcomeid.Uint64(), Token: uint32(token.Uint64())}
-	return sharecode
+	shareCode := &ShareCode{MatchID: matchid.Uint64(), OutcomeID: outcomeid.Uint64(), Token: uint32(token.Uint64())}
+	return shareCode
 }
 
 // reverse reverses a string

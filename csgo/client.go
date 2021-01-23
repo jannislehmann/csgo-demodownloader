@@ -20,12 +20,6 @@ type CS struct {
 	handlers    HandlerMap
 }
 
-// GCMatchDownloaded informs when a demo has been downloaded
-type GCMatchDownloaded struct {
-	MatchID  uint64
-	DemoName string
-}
-
 // GCReadyEvent is used to broadcast that the GC is ready
 type GCReadyEvent struct{}
 

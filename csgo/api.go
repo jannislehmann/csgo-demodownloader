@@ -16,20 +16,24 @@ type MatchResponse struct {
 	} `json:"result"`
 }
 
-// GetLatestMatch returns the latest match's share code.
-func GetLatestMatch(csgoConfig *utils.CSGOConfig, steamAPIKey string) string {
+// GetNextMatch returns the next match's share code.
+// It uses the saved share codes as the current one.
+func GetNextMatch(csgoConfig *utils.CSGOConfig, steamAPIKey string) string {
 	// Get latest match
 	u, err := url.Parse("https://api.steampowered.com/ICSGOPlayers_730/GetNextMatchSharingCode/v1")
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// Get knowncode from the database
+	latestShareCode := utils.GetLatestShareCode(csgoConfig.SteamID)
+
 	// Build query
 	q := u.Query()
 	q.Set("key", steamAPIKey)
 	q.Set("steamid", csgoConfig.SteamID)
 	q.Set("steamidkey", csgoConfig.HistoryAPIKey)
-	q.Set("knowncode", csgoConfig.KnownMatchCode)
+	q.Set("knowncode", latestShareCode)
 	u.RawQuery = q.Encode()
 
 	matchResponse := &MatchResponse{}
